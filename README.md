@@ -1,6 +1,6 @@
 ## What is does
 
-Tipical evaluation tools for binary models and data transformation for event series.
+Typical evaluation tools for binary models and data transformation for event series.
 
 ## Install package
 
