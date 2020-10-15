@@ -263,7 +263,6 @@ p.metricas_performance()
 
 ```python
 
-
 def f_to_dt(fecha_hora_min):
     return pd.to_datetime(fecha_hora_min, format='%Y-%m-%d %H:%M')
 df= pd.DataFrame()
@@ -273,7 +272,7 @@ cli2=[ '2019-08-01 15:00', '2019-08-02 10:30', '2019-08-02 15:30', '2019-08-03 1
 cli.extend(cli2)
 df['fecha']= list(map(f_to_dt, cli))
 df['evento']=['A', np.nan, 'D', 'A', 'D', np.nan,'A', 'D', 'D',  'A']
-df
+display(df)
 ```
 
 
