@@ -8,6 +8,12 @@ Typical evaluation tools for binary models and data transformation for event ser
 ```python
 %%capture
 !pip3 install git+git://github.com/gabriela-plantie/evaluation_tools
+    
+```
+
+
+```python
+from evaluation_tools import prediccion as pre
 ```
 
 ## Required packages
@@ -26,6 +32,8 @@ import itertools
 ```python
 import pandas as pd
 import numpy as np
+import scipy as sc
+from scipy.stats import ks_2samp
 ```
 
 
@@ -56,12 +64,12 @@ df = pd.DataFrame(data={'ide':ide, 'y':y, 'x1':x1, 'x2':x2, 'x3':x3, 'x4':x4, 'p
 
 
 ```python
-p=Predictor(df, 'ide', 'pr', 'y', 'date')
+p=pre.Predictor(df, 'ide', 'pr', 'y', 'date')
 p.performance_table(q_group=[100,300])
 ```
 
-    media: 0.6161
-    events: 6161
+    media: 0.6183
+    events: 6183
 
 
 
@@ -92,112 +100,112 @@ p.performance_table(q_group=[100,300])
   </thead>
   <tbody>
     <tr>
-      <th>(0.0, 0.288]</th>
+      <th>(0.0, 0.284]</th>
       <td>1000</td>
-      <td>208</td>
-      <td>0.208</td>
+      <td>190</td>
+      <td>0.190</td>
       <td>0.10</td>
       <td>0.03</td>
       <td>0.3</td>
     </tr>
     <tr>
-      <th>(0.288, 0.406]</th>
+      <th>(0.284, 0.399]</th>
       <td>1000</td>
-      <td>377</td>
-      <td>0.377</td>
+      <td>364</td>
+      <td>0.364</td>
       <td>0.10</td>
       <td>0.06</td>
       <td>0.6</td>
     </tr>
     <tr>
-      <th>(0.406, 0.501]</th>
+      <th>(0.399, 0.498]</th>
       <td>1000</td>
-      <td>423</td>
-      <td>0.423</td>
+      <td>417</td>
+      <td>0.417</td>
       <td>0.10</td>
       <td>0.07</td>
       <td>0.7</td>
     </tr>
     <tr>
-      <th>(0.501, 0.586]</th>
+      <th>(0.498, 0.581]</th>
       <td>1000</td>
-      <td>535</td>
-      <td>0.535</td>
+      <td>544</td>
+      <td>0.544</td>
       <td>0.10</td>
       <td>0.09</td>
       <td>0.9</td>
     </tr>
     <tr>
-      <th>(0.586, 0.657]</th>
+      <th>(0.581, 0.656]</th>
       <td>1000</td>
-      <td>590</td>
-      <td>0.590</td>
+      <td>625</td>
+      <td>0.625</td>
       <td>0.10</td>
       <td>0.10</td>
       <td>1.0</td>
     </tr>
     <tr>
-      <th>(0.657, 0.72]</th>
+      <th>(0.656, 0.723]</th>
       <td>1000</td>
-      <td>720</td>
-      <td>0.720</td>
+      <td>691</td>
+      <td>0.691</td>
+      <td>0.10</td>
+      <td>0.11</td>
+      <td>1.1</td>
+    </tr>
+    <tr>
+      <th>(0.723, 0.778]</th>
+      <td>1000</td>
+      <td>765</td>
+      <td>0.765</td>
       <td>0.10</td>
       <td>0.12</td>
       <td>1.2</td>
     </tr>
     <tr>
-      <th>(0.72, 0.776]</th>
+      <th>(0.778, 0.828]</th>
       <td>1000</td>
-      <td>740</td>
-      <td>0.740</td>
-      <td>0.10</td>
-      <td>0.12</td>
-      <td>1.2</td>
-    </tr>
-    <tr>
-      <th>(0.776, 0.827]</th>
-      <td>1000</td>
-      <td>809</td>
-      <td>0.809</td>
+      <td>804</td>
+      <td>0.804</td>
       <td>0.10</td>
       <td>0.13</td>
       <td>1.3</td>
     </tr>
     <tr>
-      <th>(0.827, 0.883]</th>
+      <th>(0.828, 0.883]</th>
       <td>1000</td>
-      <td>848</td>
-      <td>0.848</td>
+      <td>868</td>
+      <td>0.868</td>
       <td>0.10</td>
       <td>0.14</td>
       <td>1.4</td>
     </tr>
     <tr>
-      <th>(0.883, 0.918]</th>
+      <th>(0.883, 0.917]</th>
       <td>600</td>
-      <td>531</td>
-      <td>0.885</td>
+      <td>543</td>
+      <td>0.905</td>
       <td>0.06</td>
       <td>0.09</td>
-      <td>1.4</td>
+      <td>1.5</td>
     </tr>
     <tr>
-      <th>(0.918, 0.942]</th>
+      <th>(0.917, 0.94]</th>
       <td>300</td>
-      <td>284</td>
-      <td>0.947</td>
+      <td>280</td>
+      <td>0.933</td>
       <td>0.03</td>
       <td>0.05</td>
       <td>1.5</td>
     </tr>
     <tr>
-      <th>(0.942, 1.0]</th>
+      <th>(0.94, 1.0]</th>
       <td>100</td>
-      <td>96</td>
-      <td>0.960</td>
+      <td>92</td>
+      <td>0.920</td>
       <td>0.01</td>
-      <td>0.02</td>
-      <td>1.6</td>
+      <td>0.01</td>
+      <td>1.5</td>
     </tr>
   </tbody>
 </table>
@@ -210,14 +218,14 @@ p.performance_table(q_group=[100,300])
 p.graph_ks()
 ```
 
-    KstestResult(statistic=0.4056685249529227, pvalue=0.061451656009139155)
-    media: 0.6161
-    events: 6161
+    KstestResult(statistic=0.4116133332875716, pvalue=0.11316651528479127)
+    media: 0.6183
+    events: 6183
 
 
 
     
-![png](README_files/README_11_1.png)
+![png](README_files/README_12_1.png)
     
 
 
@@ -229,7 +237,7 @@ p.graph_stability()
 
 
     
-![png](README_files/README_12_0.png)
+![png](README_files/README_13_0.png)
     
 
 
@@ -241,7 +249,7 @@ p.metricas_performance()
 
 
 
-    {'auc': 0.76, 'ks': 0.4057, 'y_pc': 0.6161}
+    {'auc': 0.77, 'ks': 0.4116, 'y_pc': 0.6183}
 
 
 
@@ -262,8 +270,6 @@ df['fecha']= list(map(f_to_dt, cli))
 df['evento']=['A', np.nan, 'D', 'A', 'D', np.nan,'A', 'D', 'D',  'A']
 display(df)
 ```
-
-
 
 
 <div>
@@ -343,14 +349,13 @@ display(df)
 </div>
 
 
-
 ## Apply tools
     
 
 
 ```python
-from prediccion import *
-e = Events(df, grouper='ide_instalacion',  datetime_name='fecha', event_name='evento', every_x_minutes=15)
+
+e = pre.Events(df, grouper='ide_instalacion',  datetime_name='fecha', event_name='evento', every_x_minutes=15)
 
 ide=22
 display(e.df[e.df.ide_instalacion==ide][:5])
@@ -457,19 +462,19 @@ a = e.plot_ide(ide_value=ide, event_value_pos='A', figsize=(16,4))
 
 
     
-![png](README_files/README_17_2.png)
+![png](README_files/README_18_2.png)
     
 
 
 
     
-![png](README_files/README_17_3.png)
+![png](README_files/README_18_3.png)
     
 
 
 
     
-![png](README_files/README_17_4.png)
+![png](README_files/README_18_4.png)
     
 
 
@@ -484,7 +489,19 @@ a = e.plot_ide(ide_value=ide, event_value_pos='A', figsize=(16,4))
 
 
 <div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
 
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -532,7 +549,19 @@ a = e.plot_ide(ide_value=ide, event_value_pos='A', figsize=(16,4))
 
 
 <div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
 
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -580,19 +609,19 @@ a = e.plot_ide(ide_value=ide, event_value_pos='A', figsize=(16,4))
 
 
     
-![png](README_files/README_18_2.png)
+![png](README_files/README_19_2.png)
     
 
 
 
     
-![png](README_files/README_18_3.png)
+![png](README_files/README_19_3.png)
     
 
 
 
     
-![png](README_files/README_18_4.png)
+![png](README_files/README_19_4.png)
     
 
 
