@@ -49,7 +49,7 @@ class Predictor:
         l1=list(set(l1))
         l1.sort()
 
-        self.df[self.pred + '_cut']=pd.cut(self.df[self.pred], l1, right=True)
+        self.df[self.pred + '_cut']=pd.cut(self.df[self.pred], l1, right=True, include_lowest=True)
         verm=self.df.groupby(self.pred + '_cut').agg({self.ide:'count', self.real:'sum'}).copy()
         verm['br']=np.round(verm[self.real]/verm[self.ide],3)
         verm['pc_pob']=np.round(verm[self.ide]/sum(verm[self.ide]),2)
