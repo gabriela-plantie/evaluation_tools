@@ -16,7 +16,7 @@ setuptools.setup(
     install_requires=[
         'numpy>=1.19.2',
         'pandas>=1.1.2',
-        'statsmodels>=0.12.0'
+        'statsmodels>=0.12.0',
         'scipy>=1.5.2'
     ],
     classifiers=[
