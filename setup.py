@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="evaluation_tools",
-    version="0.0.1",
+    version="0.0.2",
     author="Gabriela Plantie",
     author_email="glplantie@gmail.com",
     description="Evaluation Tools",
