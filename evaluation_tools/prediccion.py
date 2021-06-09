@@ -48,18 +48,60 @@ class Predictor:
         l1.extend([0,1])
         l1=list(set(l1))
         l1.sort()
+        df_cuts = 1
+        df = self.df.copy()
+        df.loc[:,self.pred + '_cut'] = pd.cut(df[self.pred], l1, right=True, include_lowest=True)
+        df_cuts = df.groupby(self.pred + '_cut').agg({self.ide:'count', self.real:'sum'}).copy()
+        
+        df_cuts[self.real +'_rate'] = np.round(df_cuts[self.real]/df_cuts[self.ide],3)
+        df_cuts['pc_pob'] = np.round(df_cuts[self.ide]/sum(df_cuts[self.ide]),2)
+        df_cuts['pc_'+ self.real] = np.round(df_cuts[self.real]/sum(df_cuts[self.real]),2)
 
-        self.df[self.pred + '_cut']=pd.cut(self.df[self.pred], l1, right=True, include_lowest=True)
-        verm=self.df.groupby(self.pred + '_cut').agg({self.ide:'count', self.real:'sum'}).copy()
-        verm['br']=np.round(verm[self.real]/verm[self.ide],3)
-        verm['pc_pob']=np.round(verm[self.ide]/sum(verm[self.ide]),2)
-        verm['pc_'+ self.real]=np.round(verm[self.real]/sum(verm[self.real]),2)
-
-        media= sum(verm[self.real])/sum(verm[self.ide])
-        print( 'media: '+ str(media ))
-        print( 'events: '+ str(sum(verm[self.real])))
-        verm['lift']=np.round(verm['br']/media,1)
-        return verm
+        mean= sum(df_cuts[self.real])/sum(df_cuts[self.ide])
+        print( 'mean: '+ str(mean ))
+        print( 'events: '+ str(sum(df_cuts[self.real])))
+        
+        df_cuts['lift'] = np.round(df_cuts[self.real +'_rate']/mean,1)
+        f1 = []
+        pr = []
+        re = []
+        li = []
+        for cut in l1[:-1]:
+            tp = sum(df[self.real][df[self.pred]>cut])
+            fp = sum(df[self.real][df[self.pred]>cut]==0)
+            fn = sum(df[self.real][df[self.pred]<=cut])
+            
+            #tn = sum(X_.default[X_.pred<=i] == 0)
+            _pr = np.round(tp/(tp+fp),2)
+            _re = np.round(tp/(tp+fn),2)
+            _f1 = np.round(2 * (_pr * _re) / (_pr + _re),2)
+            _li = np.round( (tp/(tp+fp))/mean ,1)
+            f1.append(_f1)
+            pr.append(_pr)
+            re.append(_re)
+            li.append(_li)
+           # print (cut)
+        
+        df_cuts_2 = df_cuts.copy()
+        df_cuts_2['recall_'+ self.real] = re
+        df_cuts_2['precision_'+ self.real] = pr
+        df_cuts_2['f1_'+ self.real] = f1
+        df_cuts_2['lift_'+ self.real] = li
+        quantities = list(df_cuts_2[self.ide])
+        quantities.reverse()
+        quantities = list(np.cumsum(quantities))
+        quantities.reverse()
+        df_cuts_2['cum_' +str(self.ide)] = quantities
+        
+        
+        df_cuts_2 = df_cuts_2[['cum_' +str(self.ide), 'precision_'+ self.real, \
+                               'recall_'+ self.real,'f1_'+ self.real ,\
+                              'lift_'+ self.real
+                              ]]
+  
+        df_cuts_2.index = l1[:-1]
+        df_cuts_2.index.name = '> cut'
+        return (df_cuts , df_cuts_2)
     
     
     
@@ -69,7 +111,7 @@ class Predictor:
 
     def graph_ks(self):
         print(stats.ks_2samp(self.df[self.pred][self.df[self.real]==0], self.df[self.pred][self.df[self.real]==1]))
-        tbla_1 = self.performance_table()
+        tbla_1 = self.performance_table()[0]
         tbla_1['no_target']=tbla_1[self.ide]-tbla_1[self.real]
         
         tbla_1['pc_no_target']=tbla_1['no_target'].cumsum()/sum(tbla_1['no_target'])
@@ -87,15 +129,59 @@ class Predictor:
         pc_todos=list(tbla_1.pc_todos)
         pc_todos.insert(0,0)
 
-        plt.plot(pc_todos, pc_target , color='r', marker='d', label='% acum target')
-        plt.plot(pc_todos, pc_no_target , color='k', marker='d',label='% acum no target')
-        plt.xlabel('% poblacion total acumulada ordenados por proba: '+ self.pred )
-        plt.ylabel('% tasa de malos y buenos acumulados')
+        plt.plot(pc_todos, pc_target , color='r', marker='d', label='% cum ' + str(self.real))
+        plt.plot(pc_todos, pc_no_target , color='k', marker='d',label='% cum not '+ str(self.real))
+        plt.xlabel('% cumulative total population sorted by proba: '+ str(self.pred))
+        plt.ylabel('% cumulative rate ' +str(self.real) + ' & not ' + str(self.real))
         plt.title('Performance score')
+        plt.grid()
         legend = ax.legend(loc='upper left', shadow=False, fontsize='large')
         return None
 
-    
+ 
+    def graph_others(self):
+
+        tbla_1 = self.performance_table()[1]
+       
+        
+        
+        fig, ax = plt.subplots()
+        plt.ylim(-0.05, 1.05)
+        plt.xlim(-0.05, 1.05)
+        _re = 0
+        #_pr = sum(self.df[self.real])/self.df.shape[0]
+        
+        re = list(tbla_1['recall_'+ self.real] )
+        re.append(_re)
+        
+        pr = list(tbla_1['precision_'+ self.real])
+        #pr.append(_pr)
+        
+        f1 = list(tbla_1['f1_'+ self.real])
+        #f1.append( np.round(2 * (_pr * _re) / (_pr + _re),2))
+        
+        li = list(tbla_1['lift_'+ self.real])
+        #li.append(1) 
+            
+        #print(pr)
+        x = np.arange(0,1.1,0.1)
+        ax.plot(x[:-1], pr , color='r', marker='d', label='% precision ' + str(self.real))
+        ax.plot(x, re , color='b', marker='d',label='% recall '+ str(self.real))
+        ax.plot(x[:-1], f1 , color='k', marker='d',label='% f1 '+ str(self.real))
+        ax.set_xlabel('% population')
+        ax.set_ylabel('metrics')
+        ax.set_title('Performance metrics')
+        plt.grid()
+       
+
+        ax2=ax.twinx()
+        ax2.plot(x[:-1],li, color='g', marker='d',label='% lift')
+        ax2.set_ylabel('lift', color = 'g')
+        
+        legend = ax.legend(loc=0, shadow=False, fontsize='large')
+        #legend2 = ax2.legend(loc=0, shadow=False, fontsize='large')
+        return None
+
     
     
     
