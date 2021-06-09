@@ -60,6 +60,18 @@ df = pd.DataFrame(data={'ide':ide, 'y':y, 'x1':x1, 'x2':x2, 'x3':x3, 'x4':x4, 'p
 #set(df.date)
 ```
 
+
+```python
+min(df.pr)
+```
+
+
+
+
+    0.060002507311636755
+
+
+
 ## Apply tools
 
 
@@ -68,148 +80,41 @@ p=pre.Predictor(df, 'ide', 'pr', 'y', 'date')
 p.performance_table(q_group=[100,300])
 ```
 
-    media: 0.6183
-    events: 6183
+    mean: 0.6234
+    events: 6234
 
 
 
 
 
-<div>
-
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>ide</th>
-      <th>y</th>
-      <th>br</th>
-      <th>pc_pob</th>
-      <th>pc_y</th>
-      <th>lift</th>
-    </tr>
-    <tr>
-      <th>pr_cut</th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>(0.0, 0.284]</th>
-      <td>1000</td>
-      <td>190</td>
-      <td>0.190</td>
-      <td>0.10</td>
-      <td>0.03</td>
-      <td>0.3</td>
-    </tr>
-    <tr>
-      <th>(0.284, 0.399]</th>
-      <td>1000</td>
-      <td>364</td>
-      <td>0.364</td>
-      <td>0.10</td>
-      <td>0.06</td>
-      <td>0.6</td>
-    </tr>
-    <tr>
-      <th>(0.399, 0.498]</th>
-      <td>1000</td>
-      <td>417</td>
-      <td>0.417</td>
-      <td>0.10</td>
-      <td>0.07</td>
-      <td>0.7</td>
-    </tr>
-    <tr>
-      <th>(0.498, 0.581]</th>
-      <td>1000</td>
-      <td>544</td>
-      <td>0.544</td>
-      <td>0.10</td>
-      <td>0.09</td>
-      <td>0.9</td>
-    </tr>
-    <tr>
-      <th>(0.581, 0.656]</th>
-      <td>1000</td>
-      <td>625</td>
-      <td>0.625</td>
-      <td>0.10</td>
-      <td>0.10</td>
-      <td>1.0</td>
-    </tr>
-    <tr>
-      <th>(0.656, 0.723]</th>
-      <td>1000</td>
-      <td>691</td>
-      <td>0.691</td>
-      <td>0.10</td>
-      <td>0.11</td>
-      <td>1.1</td>
-    </tr>
-    <tr>
-      <th>(0.723, 0.778]</th>
-      <td>1000</td>
-      <td>765</td>
-      <td>0.765</td>
-      <td>0.10</td>
-      <td>0.12</td>
-      <td>1.2</td>
-    </tr>
-    <tr>
-      <th>(0.778, 0.828]</th>
-      <td>1000</td>
-      <td>804</td>
-      <td>0.804</td>
-      <td>0.10</td>
-      <td>0.13</td>
-      <td>1.3</td>
-    </tr>
-    <tr>
-      <th>(0.828, 0.883]</th>
-      <td>1000</td>
-      <td>868</td>
-      <td>0.868</td>
-      <td>0.10</td>
-      <td>0.14</td>
-      <td>1.4</td>
-    </tr>
-    <tr>
-      <th>(0.883, 0.917]</th>
-      <td>600</td>
-      <td>543</td>
-      <td>0.905</td>
-      <td>0.06</td>
-      <td>0.09</td>
-      <td>1.5</td>
-    </tr>
-    <tr>
-      <th>(0.917, 0.94]</th>
-      <td>300</td>
-      <td>280</td>
-      <td>0.933</td>
-      <td>0.03</td>
-      <td>0.05</td>
-      <td>1.5</td>
-    </tr>
-    <tr>
-      <th>(0.94, 1.0]</th>
-      <td>100</td>
-      <td>92</td>
-      <td>0.920</td>
-      <td>0.01</td>
-      <td>0.01</td>
-      <td>1.5</td>
-    </tr>
-  </tbody>
-</table>
-</div>
+    (                  ide    y  y_rate  pc_pob  pc_y  lift
+     pr_cut                                                
+     (-0.001, 0.298]  1000  214   0.214    0.10  0.03   0.3
+     (0.298, 0.414]   1000  375   0.375    0.10  0.06   0.6
+     (0.414, 0.507]   1000  472   0.472    0.10  0.08   0.8
+     (0.507, 0.59]    1000  569   0.569    0.10  0.09   0.9
+     (0.59, 0.661]    1000  578   0.578    0.10  0.09   0.9
+     (0.661, 0.723]   1000  686   0.686    0.10  0.11   1.1
+     (0.723, 0.778]   1000  746   0.746    0.10  0.12   1.2
+     (0.778, 0.831]   1000  814   0.814    0.10  0.13   1.3
+     (0.831, 0.884]   1000  858   0.858    0.10  0.14   1.4
+     (0.884, 0.92]     600  548   0.913    0.06  0.09   1.5
+     (0.92, 0.942]     300  282   0.940    0.03  0.05   1.5
+     (0.942, 1.0]      100   92   0.920    0.01  0.01   1.5,
+               cum_ide  precision_y  recall_y  f1_y  lift_y
+     > cut                                                 
+     0.000000    10000         0.62      1.00  0.77     1.0
+     0.297841     9000         0.67      0.97  0.79     1.1
+     0.413574     8000         0.71      0.91  0.80     1.1
+     0.507316     7000         0.74      0.83  0.78     1.2
+     0.589650     6000         0.77      0.74  0.75     1.2
+     0.660958     5000         0.81      0.65  0.72     1.3
+     0.722954     4000         0.84      0.54  0.66     1.3
+     0.777920     3000         0.86      0.42  0.56     1.4
+     0.830806     2000         0.89      0.29  0.44     1.4
+     0.884479     1000         0.92      0.15  0.26     1.5
+     0.920036      400         0.94      0.06  0.11     1.5
+     0.941824      100         0.92      0.01  0.02     1.5)
 
 
 
@@ -218,14 +123,29 @@ p.performance_table(q_group=[100,300])
 p.graph_ks()
 ```
 
-    KstestResult(statistic=0.4116133332875716, pvalue=0.11316651528479127)
-    media: 0.6183
-    events: 6183
+    KstestResult(statistic=0.3946487926777095, pvalue=0.014741898398902609)
+    mean: 0.6234
+    events: 6234
 
 
 
     
-![png](README_files/README_12_1.png)
+![png](README_files/README_13_1.png)
+    
+
+
+
+```python
+p.graph_others()
+```
+
+    mean: 0.6234
+    events: 6234
+
+
+
+    
+![png](README_files/README_14_1.png)
     
 
 
@@ -237,7 +157,7 @@ p.graph_stability()
 
 
     
-![png](README_files/README_13_0.png)
+![png](README_files/README_15_0.png)
     
 
 
@@ -249,7 +169,7 @@ p.metricas_performance()
 
 
 
-    {'auc': 0.77, 'ks': 0.4116, 'y_pc': 0.6183}
+    {'auc': 0.76, 'ks': 0.3946, 'y_pc': 0.6234}
 
 
 
@@ -273,7 +193,19 @@ display(df)
 
 
 <div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
 
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -366,7 +298,19 @@ a = e.plot_ide(ide_value=ide, event_value_pos='A', figsize=(16,4))
 
 
 <div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
 
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -414,7 +358,19 @@ a = e.plot_ide(ide_value=ide, event_value_pos='A', figsize=(16,4))
 
 
 <div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
 
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -462,19 +418,19 @@ a = e.plot_ide(ide_value=ide, event_value_pos='A', figsize=(16,4))
 
 
     
-![png](README_files/README_18_2.png)
+![png](README_files/README_20_2.png)
     
 
 
 
     
-![png](README_files/README_18_3.png)
+![png](README_files/README_20_3.png)
     
 
 
 
     
-![png](README_files/README_18_4.png)
+![png](README_files/README_20_4.png)
     
 
 
@@ -609,19 +565,19 @@ a = e.plot_ide(ide_value=ide, event_value_pos='A', figsize=(16,4))
 
 
     
-![png](README_files/README_19_2.png)
+![png](README_files/README_21_2.png)
     
 
 
 
     
-![png](README_files/README_19_3.png)
+![png](README_files/README_21_3.png)
     
 
 
 
     
-![png](README_files/README_19_4.png)
+![png](README_files/README_21_4.png)
     
 
 

@@ -178,7 +178,7 @@ class Predictor:
         ax2.plot(x[:-1],li, color='g', marker='d',label='% lift')
         ax2.set_ylabel('lift', color = 'g')
         
-        legend = ax.legend(loc=0, shadow=False, fontsize='large')
+        legend = ax.legend(loc='center right', shadow=False, fontsize='large', bbox_to_anchor=(-0.08, 0.85))
         #legend2 = ax2.legend(loc=0, shadow=False, fontsize='large')
         return None
 
